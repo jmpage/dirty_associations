@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    monitor_relation_changes (0.1.0)
+    dirty_relations (0.1.0)
       rails (~> 4.0.1)
 
 GEM
@@ -84,5 +84,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  monitor_relation_changes!
+  dirty_relations!
   sqlite3

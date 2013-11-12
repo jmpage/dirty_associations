@@ -1,4 +1,4 @@
-module MonitorRelationChanges
+module DirtyRelations
   extend ActiveSupport::Concern
 
   module ClassMethods
