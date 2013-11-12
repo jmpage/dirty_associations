@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MonitorRelationChangesTest < ActiveSupport::TestCase
+class DirtyRelationsTest < ActiveSupport::TestCase
   test "setting the monitored relations flags object as changed" do
     refute mock.monitored_relations_changed?
 
@@ -64,7 +64,7 @@ private
   end
 
   class MockModel < MockActiveRecordBase
-    include MonitorRelationChanges
+    include DirtyRelations
 
     monitor_relation_changes :monitored_relations
   end

@@ -1,12 +1,12 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
-require "monitor_relation_changes/version"
+require "dirty_relations/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "monitor_relation_changes"
-  s.version     = MonitorRelationChanges::VERSION
+  s.name        = "dirty_relations"
+  s.version     = DirtyRelations::VERSION
   s.authors     = ["Jen Page"]
   s.email       = ["jenipage1989@gmail.com"]
   s.homepage    = "TODO"
