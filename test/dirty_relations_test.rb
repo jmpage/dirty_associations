@@ -1,71 +1,54 @@
 require 'test_helper'
 
 class DirtyRelationsTest < ActiveSupport::TestCase
-  test "setting the monitored relations flags object as changed" do
-    refute mock.monitored_relations_changed?
+  test "setting has_many association adds object to changes" do
+    foo = FactoryGirl.create(:foo)
 
-    mock.monitored_relations = "test"
+    refute bar.foos_changed?
 
-    assert_equal "test", mock.monitored_relations
-    assert mock.monitored_relations_changed?
+    bar.foos = [ foo ]
+    assert_equal [ foo ], bar.foos
+    assert bar.foos_changed?
   end
 
-  test "setting the monitored relation ids flags object as changed" do
-    refute mock.monitored_relations_changed?
+  test "setting has_many association ids adds association to changes" do
+    foo = FactoryGirl.create(:foo)
 
-    mock.monitored_relation_ids = "test"
+    refute bar.foos_changed?
 
-    assert_equal "test", mock.monitored_relation_ids
-    assert mock.monitored_relations_changed?
+    bar.foo_ids = [ foo.id ]
+    assert_equal [ foo.id ], bar.foo_ids
+    assert bar.foos_changed?
   end
 
-  test "changed flag reset by save" do
-    mock.monitored_relations = "test"
+  test "changes reset by save" do
+    bar.foos = [ FactoryGirl.create(:foo) ]
+    assert bar.foos_changed?
 
-    assert mock.monitored_relations_changed?
-
-    mock.save
-
-    refute mock.monitored_relations_changed?
+    bar.save
+    refute bar.foos_changed?
   end
 
-  test "previous changes set to last changed flag by save" do
-    refute mock.monitored_relations_previously_changed?
-    mock.monitored_relations = "test"
-    refute mock.monitored_relations_previously_changed?
-    mock.save
-    assert mock.monitored_relations_previously_changed?
+  test "has_many association appears in previous_changes after save" do
+    refute bar.foos_previously_changed?
 
-    mock.save
-    refute mock.monitored_relations_previously_changed?
+    bar.foos = [ FactoryGirl.create(:foo) ]
+    refute bar.foos_previously_changed?
+
+    bar.save
+    assert bar.foos_previously_changed?
+
+    bar.save
+    refute bar.foos_previously_changed?
   end
 
 private
-
-  def mock
-    @mock ||= MockModel.new
-  end
-
-  # TODO: refactor mocks
-  class MockActiveRecordBase
-    include ActiveModel::Model
-    include ActiveModel::Dirty
-
-    attr_accessor :monitored_relations, :monitored_relation_ids
-
-    def initialize
-      @previously_changed = {}
+  def bar
+    unless @bar
+      foo = FactoryGirl.create(:foo)
+      @bar = FactoryGirl.create(:bar, :foo_ids => [ foo.id ])
+      @bar.save
     end
-
-    def save
-      @previously_changed = changes
-      @changed_attributes.clear
-    end
-  end
-
-  class MockModel < MockActiveRecordBase
-    include DirtyRelations
-
-    monitor_association_changes :monitored_relations
+    @bar
   end
 end
