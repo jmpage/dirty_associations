@@ -1,9 +1,9 @@
 ##
-# This concern can be used to monitor relations for changes.
+# This concern can be used to monitor associations for changes.
 #
 # Associations monitored using the methods in this concern will show up in the ActiveRecord model's changes,
 # changed and previous_changes methods.
-module DirtyRelations
+module DirtyAssociations
   extend ActiveSupport::Concern
 
   module ClassMethods
