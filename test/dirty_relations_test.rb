@@ -66,6 +66,6 @@ private
   class MockModel < MockActiveRecordBase
     include DirtyRelations
 
-    monitor_relation_changes :monitored_relations
+    monitor_association_changes :monitored_relations
   end
 end
