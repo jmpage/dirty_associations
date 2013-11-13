@@ -19,14 +19,14 @@ module DirtyAssociations
           attribute_will_change!(ids)
           super(value)
         end
+      end
 
-        define_method "#{name}_changed?" do
-          changed.include?(ids)
-        end
+      define_method "#{ids}_changed?" do
+        changed.include?(ids)
+      end
 
-        define_method "#{name}_previously_changed?" do
-          previous_changes.keys.include?(ids)
-        end
+      define_method "#{ids}_previously_changed?" do
+        previous_changes.keys.include?(ids)
       end
     end
   end
