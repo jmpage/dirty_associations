@@ -9,22 +9,23 @@ module DirtyAssociations
   module ClassMethods
 
     ##
-    # Creates methods that allows an association named +field+ to be monitored.
+    # Creates methods that allows an +association+ to be monitored.
     #
-    # The +field+ parameter should be a string or symbol representing the name of an association.
-    def monitor_association_changes(field)
-      [field, "#{field.to_s.singularize}_ids"].each do |name|
+    # The +association+ parameter should be a string or symbol representing the name of an association.
+    def monitor_association_changes(association)
+      ids = "#{association.to_s.singularize}_ids"
+      [association, ids].each do |name|
         define_method "#{name}=" do |value|
-          attribute_will_change!(field) # TODO: should probably use the singluar_field_ids name to match how belongs_to relations are handled and because it makes more sense given what's being tracked
+          attribute_will_change!(ids)
           super(value)
         end
 
         define_method "#{name}_changed?" do
-          changed.include?(field)
+          changed.include?(ids)
         end
 
         define_method "#{name}_previously_changed?" do
-          previous_changes.keys.include?(field.to_s)
+          previous_changes.keys.include?(ids)
         end
       end
     end
