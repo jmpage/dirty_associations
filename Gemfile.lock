@@ -35,6 +35,11 @@ GEM
     atomic (1.1.14)
     builder (3.1.4)
     erubis (2.7.0)
+    factory_girl (3.6.2)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (3.6.0)
+      factory_girl (~> 3.6.0)
+      railties (>= 3.0.0)
     hike (1.2.3)
     i18n (0.6.5)
     mail (2.5.4)
@@ -85,4 +90,5 @@ PLATFORMS
 
 DEPENDENCIES
   dirty_relations!
+  factory_girl_rails
   sqlite3
