@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DirtyRelationsTest < ActiveSupport::TestCase
+class DirtyAssociationsTest < ActiveSupport::TestCase
   test "setting has_many association adds object to changes" do
     foo = FactoryGirl.create(:foo)
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dirty_relations (0.1.0)
+    dirty_associations (0.1.0)
       rails (~> 4.0.1)
 
 GEM
@@ -89,6 +89,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  dirty_relations!
+  dirty_associations!
   factory_girl_rails
   sqlite3
