@@ -15,7 +15,7 @@ module DirtyAssociations
     def monitor_association_changes(field)
       [field, "#{field.to_s.singularize}_ids"].each do |name|
         define_method "#{name}=" do |value|
-          attribute_will_change!(field)
+          attribute_will_change!(field) # TODO: should probably use the singluar_field_ids name to match how belongs_to relations are handled and because it makes more sense given what's being tracked
           super(value)
         end
 

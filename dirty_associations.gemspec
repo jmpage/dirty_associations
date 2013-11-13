@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Jen Page"]
   s.email       = ["jenipage1989@gmail.com"]
   s.homepage    = "https://github.com/jmpage/dirty_associations"
-  s.summary     = "Provides a concern for monitoring changes to associations."
-  s.description = "Provides a concern for monitoring changes to associations using ActiveModel::Dirty."
+  s.summary     = "Provides a concern for monitoring changes to has_many associations."
+  s.description = "Provides a concern for monitoring changes to has_many associations using ActiveModel::Dirty."
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
