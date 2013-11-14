@@ -1,6 +1,6 @@
 = DirtyAssociations
 
-Monitors changes to <tt>has_many</tt> associations using ActiveModel::Dirty.
+Monitors changes to <tt>has_many</tt> and <tt>has_and_belongs_to_many</tt> associations using ActiveModel::Dirty.
 
 == Usage
 
@@ -13,15 +13,21 @@ Call <tt>monitor_association_changes</tt> method after <tt>has_many</tt>.
   has_many :foos
   monitor_association_changes :foos
 
-Check <tt>changes</tt>, <tt>changed</tt>, <tt>previous_changes</tt>, <tt>[singularized_association_name]_ids_changed?</tt> or <tt>[singularized_association_name]_ids_previously_changed?</tt>.
+Check one of the following methods to see if the relation has changed:
+- <tt>changes</tt>
+- <tt>changed</tt>
+- <tt>previous_changes</tt>
+- <tt>[singularized_association_name]_ids_changed?</tt>
+- <tt>[singularized_association_name]_ids_previously_changed?</tt>
 
-  bar.foos = [ Foo.find(42) ] # or you can use the foo_ids setter
-  bar.changes # { "foo_ids" => [[5], [42]] }
-  bar.changed # [ "foo_ids" ]
-  bar.foo_ids_changed? # true
-  bar.foo_ids_previously_changed? # false
-  
-  bar.save
-  bar.previous_changes # { "foo_ids" => [[5], [42]] }
-  bar.foo_ids_changed? # false
-  bar.foo_ids_previously_changed? # true
+
+   bar.foos = [ Foo.find(42) ] # or you can use the foo_ids setter
+   bar.changes # { "foo_ids" => [[5], [42]] }
+   bar.changed # [ "foo_ids" ]
+   bar.foo_ids_changed? # true
+   bar.foo_ids_previously_changed? # false
+   
+   bar.save
+   bar.previous_changes # { "foo_ids" => [[5], [42]] }
+   bar.foo_ids_changed? # false
+   bar.foo_ids_previously_changed? # true
