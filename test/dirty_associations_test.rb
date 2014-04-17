@@ -8,7 +8,7 @@ class DirtyAssociationsTest < ActiveSupport::TestCase
 
     bar.foos = [ foo ]
     assert_equal [ foo ], bar.foos
-    assert bar.foo_ids_changed?
+    assert bar.foos_changed?
   end
 
   test "setting has_many association ids adds association to changes" do
@@ -23,23 +23,23 @@ class DirtyAssociationsTest < ActiveSupport::TestCase
 
   test "changes reset by save" do
     bar.foos = [ FactoryGirl.create(:foo) ]
-    assert bar.foo_ids_changed?
+    assert bar.foos_changed?
 
     bar.save
-    refute bar.foo_ids_changed?
+    refute bar.foos_changed?
   end
 
   test "has_many association appears in previous_changes after save" do
-    refute bar.foo_ids_previously_changed?
+    refute bar.foos_previously_changed?
 
     bar.foos = [ FactoryGirl.create(:foo) ]
-    refute bar.foo_ids_previously_changed?
+    refute bar.foos_previously_changed?
 
     bar.save
-    assert bar.foo_ids_previously_changed?
+    assert bar.foos_previously_changed?
 
     bar.save
-    refute bar.foo_ids_previously_changed?
+    refute bar.foos_previously_changed?
   end
 
 private
