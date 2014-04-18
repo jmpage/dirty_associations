@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'byebug'
 
 class DirtyAssociationsTest < ActiveSupport::TestCase
   test "setting has_many association adds object to changes" do
@@ -19,6 +20,11 @@ class DirtyAssociationsTest < ActiveSupport::TestCase
     bar.foo_ids = [ foo.id ]
     assert_equal [ foo.id ], bar.foo_ids
     assert bar.foo_ids_changed?
+  end
+
+  test "setting has_many assocation attributes adds association to changes" do
+    bar.assign_attributes(:foos_attributes => [{}, {}])
+    assert bar.foos_attributes_changed?
   end
 
   test "changes reset by save" do
