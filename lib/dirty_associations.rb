@@ -16,7 +16,7 @@ module DirtyAssociations
       ids = "#{association.to_s.singularize}_ids"
       attributes = "#{association.to_s}_attributes"
 
-      [association, ids].each do |name|
+      [association, ids, attributes].each do |name|
         define_method "#{name}=" do |value|
           attribute_will_change!(name)
           super(value)
