@@ -18,16 +18,16 @@ module DirtyAssociations
 
       [association, ids, attributes].each do |name|
         define_method "#{name}=" do |value|
-          attribute_will_change!(name)
+          attribute_will_change!(association)
           super(value)
         end
 
         define_method "#{name}_changed?" do
-          changes.has_key?(name.to_s)
+          changes.has_key?(association.to_s)
         end
 
         define_method "#{name}_previously_changed?" do
-          previous_changes.has_key?(name.to_s)
+          previous_changes.has_key?(association.to_s)
         end
       end
     end
