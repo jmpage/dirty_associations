@@ -14,12 +14,15 @@ module DirtyAssociations
     # The +association+ parameter should be a string or symbol representing the name of an association.
     def monitor_association_changes(association)
       ids = "#{association.to_s.singularize}_ids"
-      attributes = "#{association.to_s}_attributes"
 
-      [association, ids, attributes].each do |name|
+      [association, ids].each do |name|
         define_method "#{name}=" do |value|
-          attribute_will_change!(association)
+          attribute_will_change!(association.to_s) unless send(name) == value
           super(value)
+        end
+
+        define_method "#{name}_change" do
+          changes[name]
         end
 
         define_method "#{name}_changed?" do
