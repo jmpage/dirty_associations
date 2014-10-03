@@ -1,11 +1,20 @@
 require 'test_helper'
 
 class DirtyAssociationsTest < ActiveSupport::TestCase
+  test "setting has_many association to the same thing is not counted as a change" do
+    foo = FactoryGirl.create(:foo)
+    bar.foos = [ foo ]
+    bar.save
+
+    refute bar.foos_changed?
+    bar.foos = [ foo ]
+    refute bar.foos_changed?
+  end
+
   test "setting has_many association adds object to changes" do
     foo = FactoryGirl.create(:foo)
 
     refute bar.foos_changed?
-
     bar.foos = [ foo ]
     assert_equal [ foo ], bar.foos
     assert bar.foos_changed?
@@ -18,11 +27,6 @@ class DirtyAssociationsTest < ActiveSupport::TestCase
 
     bar.foo_ids = [ foo.id ]
     assert_equal [ foo.id ], bar.foo_ids
-    assert bar.foos_changed?
-  end
-
-  test "setting has_many assocation attributes adds association to changes" do
-    bar.assign_attributes(:foos_attributes => [{}, {}])
     assert bar.foos_changed?
   end
 
