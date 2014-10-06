@@ -30,6 +30,24 @@ class DirtyAssociationsTest < ActiveSupport::TestCase
     assert bar.foos_changed?
   end
 
+  test "setting has_many association ids works with non-array" do
+    foo = FactoryGirl.create(:foo)
+
+    refute bar.foos_changed?
+
+    bar.foo_ids = foo.id
+    assert_equal [ foo.id ], bar.foo_ids
+    assert bar.foos_changed?
+  end
+
+  test "setting has_many association ids ignores blanks" do
+    foos = bar.foos
+    bar.foo_ids += [ "", nil ]
+    assert_equal foos, bar.foos
+
+    refute bar.foos_changed?
+  end
+
   test "changes reset by save" do
     bar.foos = [ FactoryGirl.create(:foo) ]
     assert bar.foos_changed?
