@@ -2,28 +2,34 @@ require 'test_helper'
 
 class DirtyAssociationsTest < ActiveSupport::TestCase
   test "setting has_many association to the same thing is not counted as a change" do
-    foo = FactoryGirl.create(:foo)
-    bar.foos = [ foo ]
-    bar.save
-
-    refute bar.foos_changed?
-    bar.foos = [ foo ]
+    bar.foos = bar.foos.to_a
     refute bar.foos_changed?
   end
 
-  test "setting has_many association adds object to changes" do
+  test "adding an object by setting has_many association records changes" do
+    old_foos = bar.foos.to_a
     foo = FactoryGirl.create(:foo)
 
-    refute bar.foos_changed?
-    bar.foos = [ foo ]
-    assert_equal [ foo ], bar.foos
+    bar.foos = old_foos + [ foo ]
+    assert_equal old_foos + [ foo ], bar.foos.to_a
+    assert bar.foos_changed?
+  end
+
+  test "removing an object by setting has_many association records changes" do
+    bar.foos = [ ]
+    assert_empty bar.foos.to_a
+    assert bar.foos_changed?
+  end
+
+  test "adding an object by setting has_many association via nested attributes records changes" do
+    old_foos = bar.foos.to_a
+    bar.foos_attributes = [ { } ]
+    assert_equal old_foos.size + 1, bar.foos.size
     assert bar.foos_changed?
   end
 
   test "setting has_many association ids adds association to changes" do
     foo = FactoryGirl.create(:foo)
-
-    refute bar.foos_changed?
 
     bar.foo_ids = [ foo.id ]
     assert_equal [ foo.id ], bar.foo_ids
@@ -32,8 +38,6 @@ class DirtyAssociationsTest < ActiveSupport::TestCase
 
   test "setting has_many association ids works with non-array" do
     foo = FactoryGirl.create(:foo)
-
-    refute bar.foos_changed?
 
     bar.foo_ids = foo.id
     assert_equal [ foo.id ], bar.foo_ids
@@ -75,6 +79,7 @@ private
       foo = FactoryGirl.create(:foo)
       @bar = FactoryGirl.create(:bar, :foo_ids => [ foo.id ])
       @bar.save
+      refute bar.foos_changed?
     end
     @bar
   end

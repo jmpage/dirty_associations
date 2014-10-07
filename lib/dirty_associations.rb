@@ -13,16 +13,17 @@ module DirtyAssociations
     #
     # The +association+ parameter should be a string or symbol representing the name of an association.
     def monitor_association_changes(association)
-      define_method "#{association}=" do |value|
-        attribute_will_change!(association.to_s) if _association_will_change?(association, value)
-        super(value)
-      end
-
       ids = "#{association.to_s.singularize}_ids"
 
-      define_method "#{ids}=" do |value|
-        attribute_will_change!(association.to_s) if _ids_will_change?(ids, value)
-        super(value)
+      define_method "#{association}_will_change!" do |record|
+        attribute_will_change!(association.to_s)
+        attribute_will_change!(ids.to_s)
+      end
+
+      %i(before_add before_remove).each do |callback_name|
+        full_callback_name = "#{callback_name}_for_#{association}"
+        callbacks = send(full_callback_name)
+        send("#{full_callback_name}=", callbacks + ["#{association}_will_change!".to_sym])
       end
 
       [association, ids].each do |name|
@@ -39,16 +40,5 @@ module DirtyAssociations
         end
       end
     end
-  end
-
-  private
-
-  def _association_will_change?(association, value)
-    send(association) != value
-  end
-
-  def _ids_will_change?(ids, value)
-    value = Array(value).reject &:blank?
-    send(ids) != value
   end
 end
