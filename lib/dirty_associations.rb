@@ -15,7 +15,7 @@ module DirtyAssociations
     def monitor_association_changes(association)
       ids = "#{association.to_s.singularize}_ids"
 
-      define_method "#{association}_will_change!" do |record|
+      define_method "#{association}_will_change!" do
         attribute_will_change!(association.to_s)
         attribute_will_change!(ids.to_s)
       end
@@ -23,7 +23,8 @@ module DirtyAssociations
       %i(before_add before_remove).each do |callback_name|
         full_callback_name = "#{callback_name}_for_#{association}"
         callbacks = send(full_callback_name)
-        send("#{full_callback_name}=", callbacks + ["#{association}_will_change!".to_sym])
+        callback = ->(method, owner, record) { owner.send("#{association}_will_change!") }
+        send("#{full_callback_name}=", callbacks + [callback])
       end
 
       [association, ids].each do |name|
