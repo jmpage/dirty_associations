@@ -48,6 +48,11 @@ class DirtyAssociationsTest < ActiveSupport::TestCase
     refute bar.foos_changed?
   end
 
+  test "setting has_many assocation attributes adds association to changes" do
+    bar.assign_attributes(:foos_attributes => [{}, {}])
+    assert bar.foos_changed?
+  end
+
   test "changes reset by save" do
     bar.foos = [ FactoryGirl.create(:foo) ]
     assert bar.foos_changed?
