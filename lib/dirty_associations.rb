@@ -25,6 +25,11 @@ module DirtyAssociations
         super(value)
       end
 
+      define_method "#{association}_attributes=" do |value|
+        attribute_will_change!(association.to_s)
+        super(value)
+      end
+
       [association, ids].each do |name|
         define_method "#{name}_change" do
           changes[name]
