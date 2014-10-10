@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dirty_associations (0.4.2)
+    dirty_associations (0.4.3)
       rails (>= 3.2.1)
 
 GEM
