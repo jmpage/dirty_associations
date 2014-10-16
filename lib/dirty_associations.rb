@@ -16,7 +16,7 @@ module DirtyAssociations
       ids = "#{association.to_s.singularize}_ids"
       [association, ids].each do |name|
         define_method "#{name}=" do |value|
-          attribute_will_change!(ids)
+          attribute_will_change!(ids) if self.send(ids) != value
           super(value)
         end
       end

@@ -11,7 +11,7 @@ class DirtyAssociationsTest < ActiveSupport::TestCase
     assert bar.foo_ids_changed?
   end
 
-  test "setting has_many association ids adds association to changes" do
+  test "setting has_many association ids adds association to changes if changed" do
     foo = FactoryGirl.create(:foo)
 
     refute bar.foo_ids_changed?
@@ -19,6 +19,10 @@ class DirtyAssociationsTest < ActiveSupport::TestCase
     bar.foo_ids = [ foo.id ]
     assert_equal [ foo.id ], bar.foo_ids
     assert bar.foo_ids_changed?
+
+    bar.save
+    bar.foo_ids = [ foo.id ]
+    refute bar.foo_ids_changed?
   end
 
   test "changes reset by save" do
