@@ -54,7 +54,7 @@ module DirtyAssociations
 
   def _ids_will_change?(ids, value)
     value = Array(value).reject &:blank?
-    send(ids) != value
+    send(ids).map(&:to_s) != value.map(&:to_s)
   end
 
   def _nested_attributes_will_change?(attributes_collection)
