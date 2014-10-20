@@ -48,6 +48,14 @@ class DirtyAssociationsTest < ActiveSupport::TestCase
     refute bar.foos_changed?
   end
 
+  test "setting has_many association ids ignores change if it's only string version of existing" do
+    foos = bar.foos
+    bar.foo_ids = bar.foo_ids.map(&:to_s)
+    assert_equal foos, bar.foos
+
+    refute bar.foos_changed?
+  end
+
   test "setting has_many assocation attributes adds association to changes" do
     bar.assign_attributes(:foos_attributes => [{}, {}])
     assert bar.foos_changed?
