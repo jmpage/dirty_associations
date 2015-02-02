@@ -6,7 +6,7 @@ Monitors changes to <tt>has_many</tt> and <tt>has_and_belongs_to_many</tt> assoc
 
 Include <tt>DirtyAssociations</tt> concern in your model.
 
-  include DirtyAssocations
+  include DirtyAssociations
 
 Call <tt>monitor_association_changes</tt> method after <tt>has_many</tt>.
 
