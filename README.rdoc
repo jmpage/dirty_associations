@@ -1,3 +1,7 @@
+= Unmaintained
+
+This gem is unmaintained.
+
 = DirtyAssociations
 
 Monitors changes to <tt>has_many</tt> and <tt>has_and_belongs_to_many</tt> associations using ActiveModel::Dirty.
